@@ -50,6 +50,17 @@ Convert container values to an object
     {{- $_ := set $objectValues.image "tag" $imageTag -}}
   {{- end -}}
 
+  {{- /* Process image repository */ -}}
+  {{- if kindIs "map" $objectValues.image -}}
+    {{- $imageRepo := dig "image" "repository" "" $objectValues -}}
+    {{- if kindIs "float64" $imageRepo -}}
+      {{- $imageRepo = $imageRepo | toString -}}
+    {{- end -}}
+    {{- /* Render templates inside repository, e.g. {{ .Values.werf.repo }} */ -}}
+    {{- $imageRepo = tpl $imageRepo $rootContext -}}
+    {{- $_ := set $objectValues.image "repository" $imageRepo -}}
+  {{- end -}}
+
   {{- /* Return the container object */ -}}
   {{- $objectValues | toYaml -}}
 {{- end -}}
