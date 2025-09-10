@@ -9,13 +9,8 @@ Image used by the container.
   {{- $imageRepo := $containerObject.image.repository -}}
   {{- $imageTag := $containerObject.image.tag -}}
 
-  {{- /* Normalize and render templates inside repository */ -}}
-  {{- if $imageRepo -}}
-    {{- if kindIs "float64" $imageRepo -}}
-      {{- $imageRepo = $imageRepo | toString -}}
-    {{- end -}}
-    {{- $imageRepo = tpl $imageRepo $rootContext -}}
-  {{- end -}}
+  {{- /* Render templates inside repository */ -}}
+  {{- $imageRepo = tpl $imageRepo $rootContext -}}
 
   {{- if and $imageRepo $imageTag -}}
     {{- printf "%s:%s" $imageRepo $imageTag -}}
