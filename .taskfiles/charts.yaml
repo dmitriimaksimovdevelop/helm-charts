@@ -48,7 +48,7 @@ tasks:
       - schematools-cli process dereference "{{.CHART_DIR}}/values.schema.json" --to-file "{{.CHART_DIR}}/values.schema.json"
       - defer: mv "{{.CHART_DIR}}/values.schema.bak" "{{.CHART_DIR}}/values.schema.json"
       - helm dep update
-      - helm unittest --color -f "unittests/{{.GLOB}}" .
+      - helm unittest --color -f "unittests/{{.GLOB}}" . 2> >(grep -v 'found symbolic link' >&2)
     silent: true
 
   dependency-cleanup:
